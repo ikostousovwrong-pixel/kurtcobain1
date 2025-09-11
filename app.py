@@ -42,8 +42,8 @@ TOS_VERSION = 1
 MAX_TURNS = 8
 LONG_PROB = 0.5
 
-# ========== БД ==========
-conn = sqlite3.connect("consent.db", check_same_thread=False)
+# ========== БД (НОВАЯ) ==========
+conn = sqlite3.connect("consent_bot2.db", check_same_thread=False)
 conn.execute("""
 CREATE TABLE IF NOT EXISTS tos_acceptance (
     user_id INTEGER PRIMARY KEY,
@@ -172,7 +172,6 @@ async def talk(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     app = Application.builder().token(TG_TOKEN).build()
 
-    # Handlers
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("reset", reset_cmd))
@@ -181,7 +180,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, talk))
 
     PORT = int(os.environ.get("PORT", 8000))
-    WEBHOOK_PATH = "/webhook"
+    WEBHOOK_PATH = "/webhook_bot2"  # НОВЫЙ путь
     WEBHOOK_FULL_URL = f"{WEBHOOK_URL}{WEBHOOK_PATH}"
 
     async def handle(request):
